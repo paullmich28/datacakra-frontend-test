@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/datacakra-frontend-test/static/css/main.b3639c46.css",
+    "main.js": "/datacakra-frontend-test/static/js/main.9957f8b0.js",
+    "static/js/453.9c8aa29b.chunk.js": "/datacakra-frontend-test/static/js/453.9c8aa29b.chunk.js",
+    "index.html": "/datacakra-frontend-test/index.html",
+    "main.b3639c46.css.map": "/datacakra-frontend-test/static/css/main.b3639c46.css.map",
+    "main.9957f8b0.js.map": "/datacakra-frontend-test/static/js/main.9957f8b0.js.map",
+    "453.9c8aa29b.chunk.js.map": "/datacakra-frontend-test/static/js/453.9c8aa29b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b3639c46.css",
+    "static/js/main.9957f8b0.js"
+  ]
+}
