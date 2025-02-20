@@ -28,3 +28,59 @@ export const registerSchema = z.object({
 
 export type LoginModel = z.infer<typeof loginSchema>;
 export type RegisterModel = z.infer<typeof registerSchema>;
+
+
+//Articles
+export type User = {
+  id: number;
+  documentId: string;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+};
+
+export type Category = {
+  id: number;
+  documentId: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+};
+
+export type Comment = {
+  id: number;
+  documentId: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+};
+
+export type Article = {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  cover_image_url: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  user: User;
+  category: Category;
+  comments: Comment[];
+};
+
+export type ApiResponse = {
+  data: Article[];
+};

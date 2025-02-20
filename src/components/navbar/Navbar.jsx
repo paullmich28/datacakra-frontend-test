@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Hamburger, Xmark } from "../icons/Icons";
+import { Hamburger, Logout, Xmark } from "../icons/Icons";
 import { Link } from "react-router-dom";
+import { ROUTES } from "../../model/static";
 
-const Navbar = () => {
+const Navbar = ({
+  onClick = () => {}
+}) => {
   const [isDisplayed, setIsDisplayed] = useState(false);
 
   return (
@@ -20,18 +23,13 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex gap-4 text-white invisible md:visible items-center">
-          <Link
-            to={"/login"}
-            className="bg-blue-500 px-8 py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300"
+          <button
+            onClick={onClick}
+            className="bg-red-500 flex gap-1 px-4 py-3 rounded-md font-semibold hover:bg-red-700 transition-all duration-300"
           >
-            LOGIN
-          </Link>
-          <Link
-            to={"/register"}
-            className="bg-white px-8 py-3 rounded-md font-semibold text-blue-500 border-2 border-blue-500 hover:text-white hover:bg-blue-700 hover:border-blue-700 transition-all duration-300"
-          >
-            REGISTER
-          </Link>
+            <Logout />
+            <h1>LOGOUT</h1>
+          </button>
         </div>
       </div>
 
@@ -41,16 +39,10 @@ const Navbar = () => {
         }`}
       >
         <Link
-          to={"/login"}
+          to={ROUTES.LOGIN}
           className="block py-4 px-8 text-white hover:bg-gray-800 transition-all duration-300"
         >
           LOGIN
-        </Link>
-        <Link
-          to={"/register"}
-          className="block py-4 px-8 text-white hover:bg-gray-800 transition-all duration-300"
-        >
-          REGISTER
         </Link>
       </div>
     </nav>

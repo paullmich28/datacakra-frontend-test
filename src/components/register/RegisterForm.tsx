@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 import { registerSchema, RegisterModel } from "../../model/types.ts";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ROUTES } from "../../model/static.js";
+import { COOKIEID, ROUTES } from "../../model/static.js";
+import { useCookies } from "react-cookie";
+import { LeftArrow } from "../icons/Icons.jsx";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const [, setCookies] = useCookies([COOKIEID])
 
   const {
     register,
@@ -38,6 +41,7 @@ const RegisterForm = () => {
           }
         );
 
+        setCookies(COOKIEID, response.data.jwt, {path: '/', maxAge: Date.now() + 7})
         navigate(ROUTES.DASHBOARD);
       }
     } catch (error) {
@@ -53,7 +57,8 @@ const RegisterForm = () => {
         className="bg-white shadow-lg rounded px-6 pt-3 pb-6 mb-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Link to={"/"} className="underline">
+        <Link to={ROUTES.HOME} className="underline flex items-center gap-1">
+          <LeftArrow />
           Back
         </Link>
         <h1 className="text-3xl font-medium text-center pb-6">Register Page</h1>
@@ -167,7 +172,7 @@ const RegisterForm = () => {
             Already have an account?{" "}
             <Link
               className="text-blue-500 hover:text-blue-800 underline transition-all duration-300"
-              to={"/login"}
+              to={ROUTES.LOGIN}
             >
               Log in
             </Link>

@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { COOKIEID, ROUTES } from "../../model/static.js";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { LeftArrow } from "../icons/Icons.jsx";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
+  const [, setCookies] = useCookies([COOKIEID]);
   const {
     register,
     handleSubmit,
@@ -21,8 +22,6 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginModel) => {
     const result = loginSchema.safeParse(data);
-
-    const [_, setCookies] = useCookies([COOKIEID])
 
     try {
       if (result.success) {
@@ -39,8 +38,10 @@ const LoginForm = () => {
           }
         );
 
-        setCookies(COOKIEID, response.data.jwt);
-
+        setCookies(COOKIEID, response.data.jwt, {
+          path: "/",
+          maxAge: Date.now() + 7,
+        });
         navigate(ROUTES.DASHBOARD);
       }
     } catch (error) {
@@ -56,9 +57,14 @@ const LoginForm = () => {
         className="bg-white shadow-lg rounded px-6 pt-3 pb-6 mb-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Link to={'/'} className="underline">Back</Link>
+        {/* <div className="flex"> */}
+        <Link to={ROUTES.HOME} className="underline flex items-center gap-1">
+          <LeftArrow />
+          Back
+        </Link>
+        {/* </div> */}
         <h1 className="text-3xl font-medium text-center pb-6">Login Page</h1>
-        
+
         <div className="mb-2">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -122,7 +128,7 @@ const LoginForm = () => {
             Don't have an account?{" "}
             <Link
               className="text-blue-500 hover:text-blue-800 underline transition-all duration-300"
-              to={"/register"}
+              to={ROUTES.REGISTER}
             >
               Register
             </Link>
