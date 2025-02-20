@@ -1,14 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RightArrow } from "../icons/Icons";
+import { useCookies } from "react-cookie";
+import { COOKIEID } from "../../model/static";
+import axios from "axios";
 
 const ArticleCard = ({
   id,
   title = "",
   imgUrl = "",
   creator = "",
-  onClick = () => {}
+  onClick = () => {},
 }) => {
+  const [cookies] = useCookies([COOKIEID]);
+  const [nameCheck, setNameCheck] = useState("");
+
+  const getMe = async () => {
+    try {
+      const response = await axios.get(
+        "https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api/users/me",
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.authToken}`,
+          },
+        }
+      );
+
+      setNameCheck(response.data.username);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteArticle = async () => {
+    try {
+      await axios.delete(
+        `https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api/articles/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.authToken}`,
+          },
+        }
+      );
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getMe()
+  }, [])
+
   return (
     <div className="flex flex-col md:items-center bg-gray-300 rounded-lg shadow-xl md:flex-row">
       <img
@@ -32,6 +75,14 @@ const ArticleCard = ({
           Read more
           <RightArrow />
         </Link>
+        {nameCheck === creator && (
+          <button
+            className="flex justify-center items-center bg-red-500 w-24 px-4 py-1 rounded-md text-white font-md"
+            onClick={deleteArticle}
+          >
+            Delete
+          </button>
+        )}
       </div>
     </div>
   );

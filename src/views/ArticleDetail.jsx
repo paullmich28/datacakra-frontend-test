@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { COOKIEID } from "../model/static";
+import { BeatLoader } from "react-spinners";
 import { useArticle } from "../model/context";
 import CommentBox from "../components/reusable/CommentBox";
 import CommentForm from "../components/reusable/CommentForm.tsx";
@@ -15,10 +16,6 @@ const ArticleDetail = () => {
   const [article, setArticle] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const onCommentSubmitted = async () => {
-
-  }
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -47,9 +44,15 @@ const ArticleDetail = () => {
     };
 
     fetchArticle();
-  }, [id]);
+  }, [id, category, comments, cookies.authToken]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <BeatLoader />
+      </div>
+    );
+
   if (error) return <p>{error}</p>;
 
   return (
@@ -57,9 +60,7 @@ const ArticleDetail = () => {
       <h1 className="text-4xl font-bold text-center">{article.title}</h1>
       <div className="flex flex-col">
         <h1>By: {creator}</h1>
-        {category?.name && (
-          <h1>Category: {category.name}</h1>
-        )}
+        {category?.name && <h1>Category: {category.name}</h1>}
       </div>
       <img
         src={article.cover_image_url}
@@ -70,8 +71,8 @@ const ArticleDetail = () => {
 
       <h1 className="text-xl font-semibold">Comments</h1>
       <hr />
-      
-      <CommentForm articleId={article.id}/>
+
+      <CommentForm articleId={article.id} />
 
       <hr />
 

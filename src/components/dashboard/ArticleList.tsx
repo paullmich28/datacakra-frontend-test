@@ -4,8 +4,9 @@ import axios from "axios";
 import { COOKIEID } from "../../model/static";
 import { Article } from "../../model/types";
 import ArticleCard from "../reusable/ArticleCard";
+import CustomButton from "../reusable/CustomButton";
 import { useArticle } from "../../model/context";
-import { Filter } from "../icons/Icons";
+import { BeatLoader } from "react-spinners";
 
 const ArticleList = () => {
   const { setComments, setCategory, setCreator } = useArticle();
@@ -50,13 +51,17 @@ const ArticleList = () => {
         Articles List
       </h2>
       {isLoading ? (
-        <div>
-          <h1>Wait...</h1>
+        <div className="flex justify-center items-center">
+          <BeatLoader />
         </div>
       ) : (
         <div>
           <div className="flex justify-end px-8">
-            <Filter />
+            <CustomButton
+              to="/upload"
+              title="Upload"
+              className="bg-blue-700 text-white py-2 px-4 hover:bg-blue-500"
+            />
           </div>
           <ul className="grid grid-cols-2 gap-4 px-8 mt-4">
             {articles.map((article) => (

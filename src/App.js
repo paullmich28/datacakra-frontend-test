@@ -7,7 +7,8 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Dashboard from "./views/Dashboard";
 import ArticleDetail from "./views/ArticleDetail";
-import { ArticleContext, ArticleProvider } from "./model/context";
+import { ArticleProvider } from "./model/context";
+import UploadArticle from "./views/UploadArticle";
 
 function App() {
   const [cookies] = useCookies([COOKIEID]);
@@ -62,6 +63,16 @@ function App() {
               element={
                 cookies.authToken ? (
                   <ArticleDetail />
+                ) : (
+                  <Navigate to={ROUTES.LOGIN} />
+                )
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                cookies.authToken ? (
+                  <UploadArticle />
                 ) : (
                   <Navigate to={ROUTES.LOGIN} />
                 )
