@@ -1,4 +1,5 @@
 {
+  "homepage": "http://paullmich28.github.io/datacakra-frontend-test",
   "name": "datacakra-frontend-test",
   "version": "0.1.0",
   "private": true,
@@ -24,7 +25,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +51,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "ajv": "^8.17.1",
+    "gh-pages": "^6.3.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
   }
