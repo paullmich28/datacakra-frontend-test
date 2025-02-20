@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LoginModel, loginSchema } from "../../model/types.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { COOKIEID, ROUTES } from "../../model/static.js";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 
 const LoginForm = () => {
@@ -20,6 +22,8 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginModel) => {
     const result = loginSchema.safeParse(data);
 
+    const [_, setCookies] = useCookies([COOKIEID])
+
     try {
       if (result.success) {
         const response = await axios.post(
@@ -35,7 +39,9 @@ const LoginForm = () => {
           }
         );
 
-        navigate("/");
+        setCookies(COOKIEID, response.data.jwt);
+
+        navigate(ROUTES.DASHBOARD);
       }
     } catch (error) {
       setError("root", {
@@ -103,6 +109,7 @@ const LoginForm = () => {
           <button
             className="w-full mb-2 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
             type="submit"
+            disabled={isSubmitting}
           >
             {!isSubmitting ? "Sign In" : "Loading..."}
           </button>

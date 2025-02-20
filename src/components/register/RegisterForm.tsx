@@ -1,11 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { registerSchema, RegisterModel } from "../../model/types.ts";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ROUTES } from "../../model/static.js";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +19,33 @@ const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterModel) => {};
+  const onSubmit = async (data: RegisterModel) => {
+    try {
+      const result = registerSchema.safeParse(data);
+
+      if (result.success) {
+        const response = await axios.post(
+          "https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api/auth/local/register",
+          new URLSearchParams({
+            email: data.email,
+            username: data.username,
+            password: data.password,
+          }).toString(),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+
+        navigate(ROUTES.DASHBOARD);
+      }
+    } catch (error) {
+      setError("root", {
+        message: error.response.data.error.message,
+      });
+    }
+  };
 
   return (
     <div className="w-full max-w-sm px-8 md:px-0">
@@ -36,7 +66,9 @@ const RegisterForm = () => {
           </label>
           <input
             {...register("email")}
-            className={`shadow appearance-none border ${errors.email ? "border-red-500" : null} rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${
+              errors.email ? "border-red-500" : null
+            } rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
             id="email"
             type="email"
             placeholder="example@email.com"
@@ -57,7 +89,9 @@ const RegisterForm = () => {
           </label>
           <input
             {...register("username")}
-            className={`shadow appearance-none border ${errors.username ? "border-red-500" : null} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${
+              errors.username ? "border-red-500" : null
+            } rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
             id="username"
             type="text"
             placeholder="Username"
@@ -78,7 +112,9 @@ const RegisterForm = () => {
           </label>
           <input
             {...register("password")}
-            className={`shadow appearance-none border ${errors.password ? "border-red-500" : null} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${
+              errors.password ? "border-red-500" : null
+            } rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
             id="password"
             type="password"
             placeholder="******************"
@@ -99,7 +135,9 @@ const RegisterForm = () => {
           </label>
           <input
             {...register("confirmPassword")}
-            className={`shadow appearance-none border ${errors.confirmPassword ? "border-red-500" : null} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${
+              errors.confirmPassword ? "border-red-500" : null
+            } rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
             id="confirmPassword"
             type="password"
             placeholder="******************"
@@ -116,6 +154,7 @@ const RegisterForm = () => {
           <button
             className="w-full mb-2 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-all duration-300"
             type="submit"
+            disabled={isSubmitting}
           >
             {!isSubmitting ? "Register" : "Loading..."}
           </button>
