@@ -26,9 +26,13 @@ export const registerSchema = z.object({
   }
 });
 
+export const commentSchema = z.object({
+  content: z.string().min(1, {message: "Please add a comment"})
+})
+
+export type CommentModel = z.infer<typeof commentSchema>;
 export type LoginModel = z.infer<typeof loginSchema>;
 export type RegisterModel = z.infer<typeof registerSchema>;
-
 
 //Articles
 export type User = {

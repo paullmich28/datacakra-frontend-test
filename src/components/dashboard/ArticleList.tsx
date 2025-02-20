@@ -5,6 +5,7 @@ import { COOKIEID } from "../../model/static";
 import { Article } from "../../model/types";
 import ArticleCard from "../reusable/ArticleCard";
 import { useArticle } from "../../model/context";
+import { Filter } from "../icons/Icons";
 
 const ArticleList = () => {
   const { setComments, setCategory, setCreator } = useArticle();
@@ -54,7 +55,10 @@ const ArticleList = () => {
         </div>
       ) : (
         <div>
-          <ul className="grid grid-cols-2 gap-4 px-8">
+          <div className="flex justify-end px-8">
+            <Filter />
+          </div>
+          <ul className="grid grid-cols-2 gap-4 px-8 mt-4">
             {articles.map((article) => (
               <li key={article.id}>
                 <ArticleCard
@@ -63,9 +67,9 @@ const ArticleList = () => {
                   imgUrl={article.cover_image_url}
                   creator={article.user.username}
                   onClick={() => {
-                    setComments(article.comments)
-                    setCategory(article.category)
-                    setCreator(article.user.username)
+                    setComments(article.comments);
+                    setCategory(article.category);
+                    setCreator(article.user.username);
                   }}
                 />
               </li>
